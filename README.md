@@ -1,2 +1,2 @@
-# codvid-django
+# covid-django
 web application designed in django
