@@ -1,0 +1,433 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.header{
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../static/images/pexels-anna-shvets-4167544.jpg);
+    background-position: center;
+    background-size: cover; 
+    position: relative;
+    
+}
+nav{
+    display: flex;
+    padding: 2% 6%;
+    justify-content: space-between;
+    align-items: center;
+   
+}
+
+nav img{
+    width: 150px;
+}
+.nav-links{
+    flex: 1;
+    text-align: right;
+    
+}
+.nav-links ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 8px 12px;
+    position: relative;
+    
+}
+
+.nav a{
+    color: white;
+}
+
+.nav-links ul li a{
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.nav-links ul li::after{
+    content: '';
+    width: 0%;
+    height: 2px;
+    background:#f44336;
+    display:block;
+    margin:auto;
+    transition: 0.5s;
+}
+
+.nav-links ul li:hover::after{
+    width:100%;
+
+
+}
+.text-box{
+    width:90%;
+    color:white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align:center;
+
+}
+
+.text-box h1{
+    font-size:62px;
+
+}
+
+.text-box p{
+   margin: 10px 0 40px;
+   font-size:14px ;
+   color: white;
+
+    
+}
+
+.hero-btn{
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    border: 1px solid white;
+    padding: 12px 34px;
+    font-size: 13px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+}
+
+.hero-btn:hover{
+    border: 1px solid #f44336;
+    background: #f44336;
+    transition: 1s;
+}
+
+
+nav .fa{
+    display: none;
+}
+
+@media(max-width: 700px){
+    .text-box h1{
+        font-size: 20px;
+    }
+
+    .nav-links ul li{
+        display: block;   
+    }
+
+    .nav-links {
+      position: absolute;
+      background: #f44336;
+      height: 100vh;
+      width: 200px;
+      top: 0;
+      right: -200px;
+      text-align:left;
+      z-index:2;
+      transition: 1s;
+    }
+
+    nav .fa{
+        display:block;
+        color: white;
+        margin: 10px;
+        font-size: 22px;
+        cursor: pointer;
+    }
+
+    .nav-links ul{
+        padding: 30px;
+    }
+
+}
+
+/**COURSE**/
+
+.facilities{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    padding-top: 100px;
+}
+
+h1{
+    font-size: 36px;
+    font-weight: 600;
+}
+
+p{
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+    padding: 10px;
+}
+.row{
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between ;
+}
+
+.facilities-col{
+    flex-basis: 31%;
+    background: #fff3f3;
+    border-radius: 10px;
+    margin-bottom: 5%;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: 0.5s;
+}
+
+h3{
+    text-align:center;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.facilities-col:hover{
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2)
+
+}
+
+@media(max-width: 700px){
+    .row{
+        flex-direction: column;
+    }
+}
+
+/**services**/
+
+.services{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.services-col{
+    flex-basis: 32%;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.services-col img{
+    width: 100%;
+    display: block;
+}
+
+.layer{
+    background: transparent;
+    height: 100%;
+    width: 100%;
+    position:absolute;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+}
+
+.layer:hover{
+    background: rgba(226,0,0,0.7);
+}
+
+.layer h3{
+    width: 100%;
+    font-weight: 500;
+    color: white;
+    font-size: 26px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    opacity: 0;
+    transition: 0.5s;
+
+}
+
+.layer:hover h3{
+    bottom: 49%;
+    opacity: 1;
+
+}
+
+/**images**/
+
+.images{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    padding-top: 100px;
+}
+
+.images-col{
+    flex-basis: 31% ;
+    border-radius: 10px;
+    margin-bottom: 5%;
+    text-align: left;
+}
+
+.images-col img{
+    width: 100%;
+    border-radius: 10px;
+}
+
+.images-col p{
+    padding: 0;
+}
+
+.images-col h3{
+    margin-top: 16px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+
+/**footer**/
+.footer{
+    width: 100%;
+    text-align: center;
+    padding: 30px 0;
+    background-color: black;
+}
+.footer h4{
+    color: white; 
+}
+
+.footer{
+    margin-bottom: 0px;
+    margin-top:20px;
+    font-weight: 600;
+}
+
+.icons .fa{
+    color: #f44336;
+    margin: 0 13px;
+    cursor: pointer;
+    padding: 18px 0;
+
+}
+
+.fa-heart-o{
+    color:#f44336;
+}
+
+/**find doctor**/
+.box{
+    width:80
+}
+.sub-header{
+    height: 50vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../static/images/photos/pexels-vidal-balielo-jr-1250655.jpg);
+    background-position: center;
+    background-size:cover;
+    text-align: center;
+    color:white;
+}
+
+.sub-header h1{
+    margin-top: 100px;
+}
+
+/**doctor table**/
+.container{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.table{
+    width: 100%;
+    border-collapse: collapse;
+}
+.table thead{
+    background-color:black ;
+}
+.table thead tr th{
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.35px;
+    color:white;
+    opacity: 1;
+    padding:12px;
+    vertical-align:top;
+    border: 1px solid #dee2e685;
+}
+.table tbody tr td{
+    font-size:14px;
+    Letter-spacing: 0.35px;
+    font-weight:normal ;
+    color: #f1f1f1;
+    background-color: #3c3f44;
+    padding: 8px;
+    text-align:center;
+    border:1px solid #dee2e685;
+}
+.table .text-open{
+    font-size:14px;
+    font-weight: bold;
+    letter-spacing: 0.35px;
+    color: #FF1046;
+}
+
+.table tbody tr td .btn{
+    width:130px;
+    text-decoration: none;
+    line-height: 35px;
+    display: inline-block;
+    background-color: #ff1046;
+    font-weight: medium;
+    color:#ffffff;
+    text-align: center;
+    vertical-align: middle;
+    user-select:none;
+    border: 1px solid transparent;
+    font-size: 14px ;
+    opacity:1;
+}
+@media (max-width: 500px){
+    .table thead{
+        display:none;
+    }
+    .table, .table tbody,.table tr,.table td{
+        display: block;
+        width: 100%;
+    }
+    .table tr{
+        margin-bottom: 15px;
+    }
+
+    .table tbody tr td{
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .table td:before{
+        content:attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        font-weight: 600;
+        font-size: 14px;
+        text-align:left ;
+
+    }
+}
+
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+  }
+  .card-registration .select-arrow {
+    top: 13px;
+  }
+  
+
+
+

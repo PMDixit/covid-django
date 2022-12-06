@@ -1,0 +1,155 @@
+{% extends "layout.html" %}
+{% block title %}
+Allocation of Medicine
+{% endblock %}
+
+{% block name %}
+<h1>Prescription of Medicine</h1>
+<h3>({{name}})</h3>
+{% endblock %}
+
+{% block style %}
+"../static/style1.css"
+{% endblock %}
+
+
+{% block class %}
+"sub-header"
+{% endblock %}
+
+{% block instyle %}
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    #myInput {
+        /*background-image: url('/css/searchicon.png');*/
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr {
+        border-bottom: 1px solid rgb(233, 230, 230);
+
+    }
+
+    tr.header,
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <div style="overflow-y:auto;">
+
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+        <table id="myTable">
+            <tr class="header">
+                <th>Patient Name</th>
+                <th>Description</th>
+                <th>Phone No</th>
+                <th>Allocated Medicine</th>
+                <th>Allocate Medicine</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            {% for rec in result %}
+            <tr id="{{rec.0}}">
+                <td>{{rec.1}} {{rec.2}}</td>
+                <td>{{rec.3}}</td>
+                <td>{{rec.4}}</td>
+                <td>{{rec.5}}</td>
+                <td><select name="med" type="{{rec.0}}" class="dropdown">
+                        <option value="">Select a medicine</option>
+                        <option value="None">None</option>
+                        {% for med in medicines %}
+                        <option value="{{med.m_id}}">{{med.med_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>{{rec.6}}</td>
+                <td><select name="doctor" type="{{rec.0}}" class="dropdown1">
+                        <option value="">Select status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+</div>
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".dropdown").change(function (e) {
+            e.preventDefault();
+            let patientid = $(this).attr("type")
+            let medid = $(this).val()
+            $.get("http://127.0.0.1:8000/Doctor_interface/", { "patientid": patientid, "medid": medid }).done(function (data) {
+                $("body").html(data)
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $(".dropdown1").change(function (e) {
+            e.preventDefault();
+            let patientid = $(this).attr("type")
+            let status = $(this).val()
+            $.get("http://127.0.0.1:8000/StatusPatient/", { "patientid": patientid, "status": status }).done(function (data) {
+                    $("body").html(data)
+            });
+        });
+    });
+</script>
+
+{% endblock %}

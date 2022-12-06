@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %} {% endblock %}</title>
+  <link rel="stylesheet" href={% block style %} {% endblock %}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,100;1,200;1,300&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  {% block instyle %}
+
+  {% endblock %}
+</head>
+
+<body>
+  <section class={% block class %} {% endblock %}>
+    <nav>
+      <div class="nav">
+        <a href="/home/"><i class="fas fa-clinic-medical fa-3x"></i></a>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <i class="fa fa-times" onclick="hideMenu()"></i>
+        <ul>
+          <li><a href="/home/">HOME</a></li>
+          <li><a href="/about_us/">ABOUT</a></li>
+          <li><a href="/Find_Doctor/">DOCTORS</a></li>
+          <li><a href="/Medical_Services/">SERVICES</a></li>
+          <li><a href="/Ward_Details/">WARDS</a></li>
+          <li><a href="/registration_patient/">CLICK HERE FOR REGISTRATION</a></li>
+          <li><a href="/allloginpage/">LOGIN</a></li>
+        </ul>
+      </div>
+      <i class="fa fa-bars" onclick="showMenu()"></i>
+    </nav>
+    {% block name %} {% endblock %}
+  </section>
+  {% block content %}
+
+
+
+
+
+
+
+
+
+  {% endblock %}
+
+
+  <!--footer-->
+  <section class="footer">
+    <h4>About US</h4>
+    <p>PSPP is Covid Sevice centre in Mysuru that offers 24-hr emergency care and treatment
+      across several departments, under the leadership of Medical Director.<br>With the rise in COVID-19 cases, it is
+      hard to imagine a positive start to your day. Our hospital is
+      more concerned about COVID-19 patients. We will always there with you.</p>
+    <div class="icons">
+      <i class="fa fa-facebook"></i>
+      <i class="fa fa-twitter"></i>
+      <i class="fa fa-instagram"></i>
+      <i class="fa fa-linkedin"></i>
+    </div>
+
+    <p>Made with <i class="fa fa-heart-o"></i> by PSPP</p>
+  </section>
+
+
+
+
+
+  <script>
+    var navLinks = document.getElementById("navLinks");
+    function showMenu() {
+      navLinks.style.right = "0";
+    }
+    function hideMenu() {
+      navLinks.style.right = "-200px";
+    }
+  </script>
+
+</body>
+
+
+</html>

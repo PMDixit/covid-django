@@ -1,0 +1,33 @@
+.nav1{
+    box-shadow: 0 5px 10px #1a1818;
+    background-color: black;
+    flex-direction: row;
+    display: flex;
+}
+.container-xl{
+    background-color: white;
+    box-shadow: 0 20px 10px black;
+    width: min-content;
+    padding: 20px;
+    
+}
+
+
+.button{
+    text-align: center;
+    padding:50px;
+}
+
+.container{
+    max-width: 100%;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.rounded{
+    height: 50px;
+}
+
+
+

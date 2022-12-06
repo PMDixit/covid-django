@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+Doctor Login
+{% endblock %}
+
+{% block style %}
+"../static/style5.css"
+{% endblock %}
+
+{% block class %}
+"sub-header"
+{% endblock %}
+
+{% block name %}
+{% endblock %}
+
+
+
+{% block instyle %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+  integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid bg">
+  <div class="row">
+    <div class="col-md-4 col-sm-4 sol-xs-12"></div>
+    <div class="col-md-4 col-sm-4 sol-xs-12">
+      <form class="form-container" method="post" action="/doctor_login1/">
+        {% csrf_token %}
+        <h1 class="maintext">Login Form</h1>
+        <div class="form-group">
+          <label for="exampleInputEmail1" class="write"><i class="fa fa-user fa-2x icon"></i> Enter your ID</label>
+          <input class="form-control" id="exampleInputEmail1" name="uname" aria-describedby="emailHelp"
+            placeholder="Enter your ID">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1" class="write"><i class="fa fa-key fa-2x icon"></i>Password</label>
+          <input type="password" name="psw" class="form-control" id="exampleInputPassword1"
+            placeholder="Enter your password">
+
+
+          Show Password <input type="checkbox" class="pass" onclick="myFunction()">
+        </div>
+        {% if incorect %}
+        <p style="color: red;"> ID or Password is incorrect</p>
+        {% endif %}
+
+        <button type="submit" class="  btn-block hero-btn">Submit</button>
+      </form>
+    </div>
+    <div class="col-md-4 col-sm-4 sol-xs-12"></div>
+  </div>
+</div>
+
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("exampleInputPassword1");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+</script>
+
+
+
+
+{% endblock %}

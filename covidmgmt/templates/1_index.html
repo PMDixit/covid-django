@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block title %}
+pspp
+{% endblock %}
+
+{% block name %}
+<div class="text-box">
+  <h1>PSPP Covid Services</h1>
+  <h6>where care comes first</h6>
+  <p>Highly specialised, COVID healthcare with expert doctors and advanced technology
+  <br>India's Most Trusted Network of High Quality Hospitals</p>
+  <a href="/about_us/" class="hero-btn">Visit us to know more</a>
+</div>
+{% endblock %}
+
+{% block style %}
+"../static/style.css"
+{% endblock %}
+
+{% block class %} 
+"header"
+{% endblock %}
+
+{% block content %}
+
+<section class="facilities">
+  <h1>Global Count</h1>
+  <p>Life isn't complicated if you don't break your concentration on your true vision</p>
+  <div class="row">
+      <div class="facilities-col">
+          <h3>Total Cases</h3>
+          <h4>{{total}}</h4>
+      </div>
+      <div class="facilities-col">
+          <h3>Active</h3>
+          <h4>{{active}}</h4>
+      </div>
+      <div class="facilities-col">
+          <h3>Cured</h3>
+          <h4>{{cured}}</h4>
+      </div>
+  </div>
+</section>
+
+<!--services-->
+<section class="services">
+  <h1>Facilites</h1>
+  <p>The first hospital to make quality, comprehensive COVID care easily accessible to all, in India.</p>
+
+  <div class="row">
+      <div class="services-col">
+          <img src="../static/images/pexels-nataliya-vaitkevich-8830479.jpg">
+          <div class="layer">
+              <h3>VACCINATION: COVID-19 vaccines provide strong protection against serious illness, hospitalization and death.  </h3>
+          </div>
+      </div>
+      <div class="services-col">
+          <img src="../static/images/covid.jpg">
+          <div class="layer">
+              <h3>Special room for critical patients who needs intensive treatment and continuous observation</h3>
+          </div>
+      </div>
+      <div class="services-col">
+          <img src="../static/images/covid2.jpg">
+          <div class="layer">
+              <h3>WARDS: a room with beds for many people, often people who need similar treatment</h3>
+          </div>
+      </div>
+  </div>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,23 @@
+
+.container{
+    width: 100%;
+    padding: 10px;
+    box-shadow: 0 5px 10px #1a1818;
+    background-color: black;
+}
+
+.container-xl{
+    background-color: white;
+    box-shadow: 0 20px 10px black;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.bg-primary{
+    background-color: aliceblue !important;
+}
