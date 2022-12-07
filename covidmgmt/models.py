@@ -28,7 +28,7 @@ class Patient(models.Model):
     address=models.CharField(max_length=100)
     discription=models.TextField()
     status=models.CharField(max_length=20,default="Active")
-    ward=models.ForeignKey(Ward,on_delete=CASCADE,null=True)
+    ward=models.IntegerField(null=True)
     Date_of_Admit=models.DateTimeField()
     Date_of_Discharge=models.DateTimeField(null=True)
     password=models.CharField(max_length=200)
@@ -49,19 +49,19 @@ class Service(models.Model):
     price=models.IntegerField()
 
 class Prescribed_to(models.Model):
-    m=models.ForeignKey(Medicine,on_delete=CASCADE)
-    p=models.ForeignKey(Patient,on_delete=CASCADE)
+    m=models.IntegerField()
+    p=models.IntegerField()
     class Meta:
         unique_together = ('m', 'p')
 
 class Treats(models.Model):
-    d=models.ForeignKey(Doctor,on_delete=CASCADE)
-    p=models.ForeignKey(Patient,on_delete=CASCADE)
+    d=models.IntegerField()
+    p=models.IntegerField()
     class Meta:
         unique_together = ('d', 'p')
 
 class Avails(models.Model):
-    p=models.ForeignKey(Patient,on_delete=CASCADE)
-    service=models.ForeignKey(Service,on_delete=CASCADE)
+    p=models.IntegerField()
+    service=models.IntegerField()
     class Meta:
         unique_together = ('p', 'service')
