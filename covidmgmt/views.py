@@ -118,7 +118,10 @@ def ward_receptionalist_interface(request):
 
         #If none option is choosed ward_id for the patient selcted will set to null
         if wardid=="None":
-            cursor.execute('UPDATE covidmgmt_patient SET ward_id=null where p_id='+patid)
+            #cursor.execute('UPDATE covidmgmt_patient SET ward_id=null where p_id='+patid)
+            obj=Patient.objects.get(p_id=patid)
+            obj.ward=None
+            obj.save()
             return wardalloc(request,cursor,id,bed=False)
         
         #getting no of beds in selected ward_id
@@ -130,7 +133,10 @@ def ward_receptionalist_interface(request):
 
         #cheaking if beds are avilable for selcted wardid
         if(alloted<count):
-            cursor.execute('UPDATE covidmgmt_patient SET ward_id='+wardid+' where p_id='+patid)
+            #cursor.execute('UPDATE covidmgmt_patient SET ward_id='+wardid+' where p_id='+patid)
+            obj=Patient.objects.get(p_id=patid)
+            obj.ward=wardid
+            obj.save()
             return wardalloc(request,cursor,id,bed=False)
         else:
             print("Not allowed")
@@ -145,12 +151,13 @@ def service_receptionalist_interface(request):
         patid=request.GET.get("patientid")
         serid=request.GET.get("serid")
         if serid=="None":
-            cursor.execute('DELETE FROM covidmgmt_avails WHERE p_id='+patid)
+            Avails.objects.filter(p_id=patid).delete()
             return servicealloc(request,cursor,id)
             
         else:
             try:
-                cursor.execute('INSERT INTO covidmgmt_avails (p_id,service_id) VALUES('+ patid +','+ serid +')')
+                avail=Avails(p_id=patid,service_id=serid)
+                avail.save()
                 return servicealloc(request,cursor,id)
             except:
                 print("Duplicates are Not allowed")
@@ -165,14 +172,12 @@ def doc_receptionalist_interface(request):
         patid=request.GET.get("patientid")
         docid=request.GET.get("docid")
         if docid=="None":
-            cursor.execute('DELETE FROM covidmgmt_treats WHERE p_id='+patid)
+            Treats.objects.filter(p_id=patid).delete()
             return wardalloc(request,cursor,id,bed=False)
             
         else:
-            #print(patid,wardid)
-            #cursor.execute('DELETE FROM covidmgmt_treats WHERE p_id='+patid) #deleting the existing
             try:
-                cursor.execute('INSERT INTO covidmgmt_treats (p_id,d_id) VALUES('+ patid +','+ docid +')')
+                Treats(p_id=patid,d_id=docid).save()
                 return wardalloc(request,cursor,id,bed=False)
             except:
                 print("Duplicates Not Allowed")
@@ -186,12 +191,12 @@ def Doctor_interface(request):
     medid=request.GET.get("medid")
     id=request.COOKIES.get('docid')
     if medid=="None":
-        cursor.execute('DELETE FROM covidmgmt_prescribed_to WHERE p_id='+patid)
+        Prescribed_to.objects.filter(p_id=patid).delete()
         return medalloc(request,cursor,id)
             
     else:
         try:
-            cursor.execute('INSERT INTO covidmgmt_prescribed_to (p_id,m_id) VALUES('+ patid +','+ medid +')')
+            Prescribed_to(p_id=patid,m_id=medid).save()
             return medalloc(request,cursor,id)
         except:
             print("duplicates are not allowed")
@@ -229,23 +234,19 @@ def wardalloc(request,cursor,id,bed):
     #getting logged in recptionalist name
     resp=Recptionalist.objects.get(r_id=id)
     respname=resp.name
+    
+    results=[[i.p_id,i.first_name,i.last_name,i.ward,i.phone_no,i.discription,None,i.status,i.Date_of_Admit] for i in Patient.objects.all()]
+    for i in results:
+        try:
+            i[3]=Ward.objects.get(ward_id=i[3]).ward_type
+        except:
+            pass
+        doc_id_list=[k.d_id for k in tuple(Treats.objects.filter(p_id=i[0]))]
+        i[6]=",".join([k.name for k in [Doctor.objects.filter(d_id=z)[0] for z in doc_id_list]])
+        i=tuple(i)
 
-
-    #getting ward and service assigned for a patient
-    cursor.execute('''SELECT mt.pid,mt.fname,mt.lname,ch1.ward_type as ward,mt.phno,mt.discript,GROUP_CONCAT(ch2.name),mt.stat,mt.dateadmit as doctors FROM
-                    (SELECT p.p_id as pid,p.first_name as fname,p.last_name as lname,p.ward_id as wid,p.phone_no as phno,p.discription as discript,t.d_id as did, p.status as stat,p.Date_of_Admit as dateadmit
-                    FROM covidmgmt_patient as p LEFT OUTER JOIN covidmgmt_treats as t
-                    on t.p_id=p.p_id) as mt LEFT OUTER JOIN covidmgmt_ward as ch1 ON mt.wid= ch1.ward_id  LEFT OUTER JOIN covidmgmt_doctor as ch2 ON ch2.d_id=mt.did
-                    GROUP BY mt.pid
-                    ORDER BY mt.stat;''')
-    results=cursor.fetchall()
-
-    #getting ward id and ward name
-    cursor.execute("SELECT ward_id,ward_type FROM covidmgmt_ward")
-    ward=cursor.fetchall()
-    #getting doctor id and doctor name
-    cursor.execute("SELECT d_id,name FROM covidmgmt_doctor")
-    doctor=cursor.fetchall()
+    ward=[(i.ward_id,i.ward_type) for i in Ward.objects.all()]
+    doctor=[(i.d_id,i.name) for i in Doctor.objects.all()]
             
     return render(request,"10_ward_receptionalist_interface.html",{"reception":results,"ward":ward,"doctor":doctor,"bed":bed,"name":respname})
 
@@ -254,33 +255,29 @@ def servicealloc(request,cursor,id):
     resp=Recptionalist.objects.get(r_id=id)
     respname=resp.name
 
-    #getting ward and service assigned for a patient
-    cursor.execute('''SELECT mt.pid,mt.fname,mt.lname,GROUP_CONCAT(ct.ser_name) as servicnames,mt.phno,mt.descrip,mt.address,mt.stat,mt.dateadmit FROM (SELECT p.p_id as pid,p.first_name as fname,p.last_name as lname,a.service_id as serid,p.phone_no as phno,p.discription as descrip,p.address as address,p.status as stat,p.Date_of_Admit as dateadmit
-                    FROM covidmgmt_patient as p LEFT OUTER JOIN covidmgmt_avails as a ON p.p_id = a.p_id ) as mt LEFT OUTER JOIN covidmgmt_service ct ON mt.serid=ct.ser_id
-                    GROUP by mt.pid
-                    ORDER BY mt.stat;''')
-    results=cursor.fetchall()
-    #getting all the services
-    cursor.execute("SELECT ser_id,ser_name FROM covidmgmt_service")
-    service=cursor.fetchall()
+    results=[[i.p_id,i.first_name,i.last_name,None,i.phone_no,i.discription,i.address,i.status,i.Date_of_Admit] for i in Patient.objects.all()]
+    service=[(i.ser_id,i.ser_name) for i in Service.objects.all()]
+
+    for i in results:
+        ser_id_list=[k.service_id for k in Avails.objects.filter(p_id=i[0])]
+        i[3]=",".join([z.ser_name for z in (Service.objects.filter(ser_id=k)[0] for k in ser_id_list)])
+        i=tuple(i)
+
             
     return render(request,"10_service_receptionalist_interface.html",{"reception":results,"service":service,"name":respname})
 
 def medalloc(request,cursor,id):
     doctor=Doctor.objects.get(d_id=id)
     name=doctor.name
-    cursor.execute('''SELECT mt.pid,mt.fname,mt.lname,mt.discript,mt.phno,GROUP_CONCAT(ch.med_name) as med,mt.stat 
-                    FROM (SELECT p.p_id as pid,p.first_name as fname,p.last_name as lname,w.m_id as mid,p.phone_no as phno,p.discription as discript,p.status as stat
-                    FROM covidmgmt_patient as p LEFT OUTER JOIN covidmgmt_prescribed_to as w ON p.p_id = w.p_id) as mt LEFT OUTER JOIN covidmgmt_medicine as ch ON ch.m_id=mt.mid JOIN covidmgmt_treats t ON 			  mt.pid=t.p_id
-                    WHERE t.d_id='''+id+'''
-                    GROUP BY mt.pid
-                    ORDER BY mt.stat;
-                    ''')
-    result=cursor.fetchall()
+    patient_ids=[i.p_id for i in Treats.objects.filter(d_id=id)]
+    result=[]
+    for i in patient_ids:
+        obj=Patient.objects.get(p_id=i)
+        med_id_list=[k.m_id for k in Prescribed_to.objects.filter(p_id=i)]
+        med_names=",".join([z.med_name for z in (Medicine.objects.filter(m_id=k)[0] for k in med_id_list)])
+        result.append((obj.p_id,obj.first_name,obj.last_name,obj.discription,obj.phone_no,med_names,obj.status))
 
     medicines=Medicine.objects.all()
-
-
     return render(request,"11_Doctor_interface.html",{"result":result,"medicines":medicines,"name":name})
 
 def patientresult(request,cursor,id):
