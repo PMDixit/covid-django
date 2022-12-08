@@ -284,19 +284,29 @@ def medalloc(request,cursor,id):
     return render(request,"11_Doctor_interface.html",{"result":result,"medicines":medicines,"name":name})
 
 def patientresult(request,cursor,id):
-    cursor.execute('''SELECT p.p_id,p.first_name,p.last_name,GROUP_CONCAT(DISTINCT(d.name)),GROUP_CONCAT(DISTINCT(d.phone_no)),wd.ward_type,GROUP_CONCAT(DISTINCT(sr.ser_name)),GROUP_CONCAT(DISTINCT(md.med_name)),p.status,SUM(DISTINCT(wd.price)),SUM(DISTINCT(sr.price))
-                    FROM covidmgmt_patient p LEFT OUTER JOIN covidmgmt_treats tr ON p.p_id=tr.p_id LEFT OUTER JOIN covidmgmt_doctor d ON d.d_id=tr.d_id LEFT OUTER JOIN
-	                covidmgmt_avails av ON av.p_id=p.p_id LEFT OUTER JOIN covidmgmt_service sr ON sr.ser_id=av.service_id LEFT OUTER JOIN
-                    covidmgmt_prescribed_to pr ON pr.p_id=p.p_id LEFT OUTER JOIN covidmgmt_medicine md ON md.m_id=pr.m_id LEFT OUTER join covidmgmt_ward wd ON wd.ward_id=p.ward_id
-                    WHERE p.p_id='''+id+'''
-                    GROUP BY p.p_id;
-                    ''')
-    result=cursor.fetchall()
-    name=result[0][1]+' '+result[0][2]
-    if result[0][9]==None:
-        sum=result[0][10]
-    elif result[0][10]==None:
-        sum=result[0][9]
-    else:
-        sum=result[0][9]+result[0][10]
-    return render(request,"9_patient_interface.html",{"result":result,"sum":sum,"name":name})
+    patient_ob=Patient.objects.filter(p_id=id)[0]
+    name=patient_ob.first_name+" "+patient_ob.last_name
+    try:
+        ward_id1=patient_ob.ward
+        ward_type=Ward.objects.filter(ward_id=ward_id1)[0].ward_type
+        ward_price=Ward.objects.filter(ward_id=ward_id1)[0].price
+    except:
+        ward_type=None
+        ward_price=0
+
+    doc_id_list=[i.d_id for i in tuple(Treats.objects.filter(p_id=id))]
+    doc_name=",".join([i.name for i in [Doctor.objects.filter(d_id=k)[0] for k in doc_id_list]])
+    doc_phone=",".join([str(i.phone_no) for i in [Doctor.objects.filter(d_id=k)[0] for k in doc_id_list]])
+
+    ser_id_list=[i.service_id for i in Avails.objects.filter(p_id=id)]
+    ser_name=",".join([i.ser_name for i in (Service.objects.filter(ser_id=k)[0] for k in ser_id_list)])
+    ser_price_list=[i.price for i in (Service.objects.filter(ser_id=k)[0] for k in ser_id_list)]
+
+    med_id_list=[i.m_id for i in Prescribed_to.objects.filter(p_id=id)]
+    med_name=",".join([i.med_name for i in (Medicine.objects.filter(m_id=k)[0] for k in med_id_list)])
+    
+    totalprice=0
+    totalprice=ward_price+sum(ser_price_list)
+    result=[(id,patient_ob.first_name,patient_ob.last_name,doc_name,doc_phone,ward_type,ser_name,med_name,patient_ob.status,ward_price,sum(ser_price_list))]
+
+    return render(request,"9_patient_interface.html",{"result":result,"sum":totalprice,"name":name})

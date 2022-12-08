@@ -45,19 +45,19 @@ class SerAdmin(admin.ModelAdmin):
 admin.site.register(Service,SerAdmin)
 
 class AvailAdmin(admin.ModelAdmin):
-    list_display = ('p','service')
-    ordering = ('p',)
-    search_fields = ('p','service')
+    list_display = ('p_id','service_id')
+    ordering = ('p_id',)
+    search_fields = ('p_id','service_id')
 admin.site.register(Avails,AvailAdmin)
 
 class PrescAdmin(admin.ModelAdmin):
-    list_display = ('m','p')
-    ordering = ('m',)
-    search_fields = ('m','p')
+    list_display = ('m_id','p_id')
+    ordering = ('m_id',)
+    search_fields = ('m_id','p_id')
 admin.site.register(Prescribed_to,PrescAdmin)
 
 class TreatAdmin(admin.ModelAdmin):
-    list_display = ('d','p')
-    ordering = ('d',)
-    search_fields = ('d','p')
+    list_display = ('d_id','p_id')
+    ordering = ('d_id',)
+    search_fields = ('d_id','p_id')
 admin.site.register(Treats,TreatAdmin)

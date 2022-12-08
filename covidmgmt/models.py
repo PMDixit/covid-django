@@ -49,19 +49,19 @@ class Service(models.Model):
     price=models.IntegerField()
 
 class Prescribed_to(models.Model):
-    m=models.IntegerField()
-    p=models.IntegerField()
+    m_id=models.IntegerField()
+    p_id=models.IntegerField()
     class Meta:
-        unique_together = ('m', 'p')
+        unique_together = ('m_id', 'p_id')
 
 class Treats(models.Model):
-    d=models.IntegerField()
-    p=models.IntegerField()
+    d_id=models.IntegerField()
+    p_id=models.IntegerField()
     class Meta:
-        unique_together = ('d', 'p')
+        unique_together = ('d_id', 'p_id')
 
 class Avails(models.Model):
-    p=models.IntegerField()
-    service=models.IntegerField()
+    p_id=models.IntegerField()
+    service_id=models.IntegerField()
     class Meta:
-        unique_together = ('p', 'service')
+        unique_together = ('p_id', 'service_id')
